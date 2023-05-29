@@ -1,9 +1,11 @@
 import streamlit as st
 import random
 
+
 def coin_flip():
     result = random.choice(["Heads", "Tails"])
     return result
+
 
 def run_section(title, code, button_text, n=None, button_key=None):
     codeCol, resultCol = st.columns([2, 1])
@@ -46,6 +48,7 @@ def run_section(title, code, button_text, n=None, button_key=None):
                     unsafe_allow_html=True
                 )
 
+
 def count_flips(n):
     heads = 0
     tails = 0
@@ -60,12 +63,8 @@ def count_flips(n):
     heads_percentage = 100.0 * heads / n
     tails_percentage = 100.0 * tails / n
 
-    return (
-        f"Heads count: {heads}\n"
-        f"Tails count: {tails}\n"
-        f"Heads percentage: {heads_percentage}%\n"
-        f"Tails percentage: {tails_percentage}%"
-    )
+    return heads, tails, heads_percentage, tails_percentage
+
 
 st.set_page_config(
     page_title="The Law of Large Number",
@@ -75,7 +74,8 @@ st.set_page_config(
 
 url = "https://easylang.dev/apps/tutorial_mcarlo.html"
 st.title("The Law of Large Numbers")
-st.write("This web app is a replication from [this link](%s) to practice the Monte Carlo Methods and Python skills" % url)
+st.write(
+    "This web app is a replication from [this link](%s) to practice the Monte Carlo Methods and Python skills" % url)
 
 st.header("Coin flip")
 code = '''
@@ -101,13 +101,32 @@ def count_flips(n):
     heads_percentage = 100.0 * heads / n
     tails_percentage = 100.0 * tails / n
 
-    return (
-        f"Heads count: {heads}\n"
-        f"Tails count: {tails}\n"
-        f"Heads percentage: {heads_percentage}%\n"
-        f"Tails percentage: {tails_percentage}%"
-    )
-
-n = st.number_input("Enter the value of n", value=1000, min_value=1, step=1)
+    return heads, tails, heads_percentage, tails_percentage
 """
-run_section("Count flips", code, "Run", button_key="btn2")
+n = st.number_input("Enter the value of n", value=1000, min_value=1, step=1)
+
+code_col, input_col = st.columns([2, 1])
+
+with code_col:
+    st.code(code, language='Python')
+
+with input_col:
+    if st.button("Run", key="btn2"):
+        heads, tails, heads_percentage, tails_percentage = count_flips(n)
+        st.markdown(
+            f'''
+            <style>
+            .result {{
+                background-color: #ccffcc;
+            }}
+            </style>
+            ''',
+            unsafe_allow_html=True
+        )
+        st.markdown(
+            f'<div class="result">Heads count: {heads}</div>'
+            f'<div class="result">Tails count: {tails}</div>'
+            f'<div class="result">Heads percentage: {heads_percentage:.2f}%</div>'
+            f'<div class="result">Tails percentage: {tails_percentage:.2f}%</div>',
+            unsafe_allow_html=True
+        )
