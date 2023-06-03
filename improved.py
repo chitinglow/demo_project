@@ -6,6 +6,21 @@ def coin_flip():
     result = random.choice(["Heads", "Tails"])
     return result
 
+def check_win_or_lose():
+    numb = random.randint(1, 37)
+    if numb >= 19:
+        return "You win $10"
+    else:
+        return "You lose $10"
+
+def calculate_cash():
+    cash = 0
+    for i in range(1, 1001):
+        cash -= 10
+        numb = random.randint(1, 37)
+        if numb >= 19:
+            cash += 20
+    return f"Cash after playing: ${cash}"
 
 def run_section(title, code, button_text, n=None, button_key=None):
     codeCol, resultCol = st.columns([2, 1])
@@ -33,6 +48,47 @@ def run_section(title, code, button_text, n=None, button_key=None):
                 )
             else:
                 result = coin_flip()
+                st.markdown(
+                    f"""
+                    <style>
+                    .result {{
+                        background-color: #ccffcc;
+                    }}
+                    </style>
+                    """,
+                    unsafe_allow_html=True
+                )
+                st.markdown(
+                    f'<div class="result">{result}</div>',
+                    unsafe_allow_html=True
+                )
+
+def run_roulette(title, code, button_text, n=None, button_key=None):
+    codeCol, resultCol = st.columns([2, 1])
+
+    with codeCol:
+        st.code(code, language='Python')
+
+    with resultCol:
+        if st.button(button_text, button_key):
+            if n is not None:
+                result = count_flips(n)
+                st.markdown(
+                    f"""
+                    <style>
+                    .result {{
+                        background-color: #ccffcc;
+                    }}
+                    </style>
+                    """,
+                    unsafe_allow_html=True
+                )
+                st.markdown(
+                    f'<div class="result">{result}</div>',
+                    unsafe_allow_html=True
+                )
+            else:
+                result = check_win_or_lose()
                 st.markdown(
                     f"""
                     <style>
@@ -128,5 +184,53 @@ with input_col:
             f'<div class="result">Tails count: {tails}</div>'
             f'<div class="result">Heads percentage: {heads_percentage:.2f}%</div>'
             f'<div class="result">Tails percentage: {tails_percentage:.2f}%</div>',
+            unsafe_allow_html=True
+        )
+
+code = """
+def check_win_or_lose():
+    numb = random.randint(1, 37)
+    if numb >= 19:
+        return "You win $10"
+    else:
+        return "You lose $10"
+"""
+
+st.header("Roulette")
+
+run_roulette("Roulette", code, "Run", button_key="btn3")
+
+
+code1 = """
+def calculate_cash():
+    cash = 0
+    for i in range(1, 1001):
+        cash -= 10
+        numb = random.randint(1, 37)
+        if numb >= 19:
+            cash += 20
+    return f"Cash after playing: ${cash}"
+"""
+
+code_col1, input_col1 = st.columns([2, 1])
+
+with code_col:
+    st.code(code1, language='Python')
+
+with input_col:
+    if st.button("Run", key="btn4"):
+        result1 = calculate_cash()
+        st.markdown(
+            f'''
+            <style>
+            .result {{
+                background-color: #ccffcc;
+            }}
+            </style>
+            ''',
+            unsafe_allow_html=True
+        )
+        st.markdown(
+            f'<div class="result">{result1}</div>',
             unsafe_allow_html=True
         )
