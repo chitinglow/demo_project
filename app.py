@@ -1,28 +1,11 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 import random
-import io
 import time
 
 def coin_flip():
     result = random.choice(["Heads", "Tails"])
     return result
-
-def check_win_or_lose():
-    numb = random.randint(1, 37)
-    if numb >= 19:
-        return "You win $10"
-    else:
-        return "You lose $10"
-
-def calculate_cash(n):
-    cash = 0
-    for i in range(1, n+1):
-        cash -= 10
-        numb = random.randint(1, 37)
-        if numb >= 19:
-            cash += 20
-    return cash
 
 def count_flips(n):
     heads = 0
@@ -39,6 +22,22 @@ def count_flips(n):
     tails_percentage = 100.0 * tails / n
 
     return heads, tails, heads_percentage, tails_percentage
+
+def check_win_or_lose():
+    numb = random.randint(1, 37)
+    if numb >= 19:
+        return "You win $10"
+    else:
+        return "You lose $10"
+
+def calculate_cash(n):
+    cash = 0
+    for i in range(1, n+1):
+        cash -= 10
+        numb = random.randint(1, 37)
+        if numb >= 19:
+            cash += 20
+    return cash
 
 
 st.set_page_config(
